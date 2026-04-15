@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>おてんきログ - 気温・湿度計</title>
+    <link rel="stylesheet" href="index.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Input Screen -->
+        <div id="input-screen" class="screen active">
+            <header>
+                <h1>おてんきログ</h1>
+            </header>
+
+            <div class="main-layout">
+                <div class="controls-column">
+                    <div class="card">
+                        <span class="label">いまの きおん</span>
+                        <div class="input-group">
+                            <button class="btn-stepper" id="temp-minus" aria-label="ひく">－</button>
+                            <div class="value-display">
+                                <span id="temp-val">20</span><small class="unit">℃</small>
+                            </div>
+                            <button class="btn-stepper" id="temp-plus" aria-label="たす">＋</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="label">いまの しつど</span>
+                        <div class="input-group">
+                            <button class="btn-stepper" id="hum-minus" aria-label="ひく">－</button>
+                            <div class="value-display">
+                                <span id="hum-val">50</span><small class="unit">%</small>
+                            </div>
+                            <button class="btn-stepper" id="hum-plus" aria-label="たす">＋</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="label">いまの てんき</span>
+                        <div class="weather-grid" id="weather-options">
+                            <button class="weather-btn" data-weather="sunny">
+                                <span class="weather-icon">☀️</span>
+                                <span class="weather-label">はれ</span>
+                            </button>
+                            <button class="weather-btn" data-weather="cloudy">
+                                <span class="weather-icon">☁️</span>
+                                <span class="weather-label">くもり</span>
+                            </button>
+                            <button class="weather-btn" data-weather="rainy">
+                                <span class="weather-icon">☔</span>
+                                <span class="weather-label">あめ</span>
+                            </button>
+                            <button class="weather-btn" data-weather="snowy">
+                                <span class="weather-icon">❄️</span>
+                                <span class="weather-label">ゆき</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="character-area" class="character-column">
+                    <div class="speech-bubble">
+                        <p id="character-speech">こんにちは！きょうの ようすを おしえてね。</p>
+                    </div>
+                    <div class="character-container">
+                        <img id="status-char" src="assets/characters/status_T4_H2.png" alt="キャラクター">
+                    </div>
+                </div>
+            </div>
+
+            <button id="save-btn" class="btn-primary">きろくする</button>
+            <button id="go-to-graph" class="btn-secondary">グラフをみる</button>
+        </div>
+
+        <!-- Graph Screen -->
+        <div id="graph-screen" class="screen">
+            <header>
+                <h1>グラフ</h1>
+            </header>
+
+            <div class="card">
+                <div id="chart-container">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+            </div>
+
+            <div id="list-container" class="history-list">
+                <!-- Data items injected here -->
+            </div>
+
+            <div class="actions-area">
+                <button id="reset-btn" class="btn-danger">すべての記録をけす</button>
+                <button id="back-to-input" class="btn-secondary">入力にもどる</button>
+            </div>
+        </div>
+
+        <div id="toast" style="visibility: hidden;">きろくしました！</div>
+
+        <!-- Custom Confirmation Modal -->
+        <div id="custom-confirm-modal" class="modal-overlay">
+            <div class="modal-content">
+                <p>すべての記録を消してもよろしいですか？</p>
+                <div class="modal-actions">
+                    <button id="confirm-yes" class="btn-danger">はい</button>
+                    <button id="confirm-no" class="btn-secondary">いいえ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+/* General Body Styles */
+body {
+    font-family: 'Chalkboard SE', 'Comic Sans MS', cursive, sans-serif; /* レトロなフォント */
+    margin: 0;
+    padding: 0;
+    background-color: #333; /* 黒板のベースカラー */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><filter id="f1"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" result="noise"/><feDiffuseLighting in="noise" lightingColor="%23555" surfaceScale="2"><feDistantLight azimuth="225" elevation="45"/></feDiffuseLighting></filter><rect width="100" height="100" fill="%23333"/><rect width="100" height="100" fill="%23222" opacity="0.7"/><rect width="100" height="100" fill="%23333" filter="url(%23f1)" opacity="0.3"/></svg>'); /* 黒板テクスチャ */
+    background-size: cover;
+    color: #eee; /* チョークのような白 */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top for better content flow */
+    min-height: 100vh;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    background-color: rgba(0, 0, 0, 0.3); /* 黒板が透けるように半透明 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    width: 100%;
+    margin: 20px auto; /* Center the app with some vertical margin */
+    overflow: hidden;
+    position: relative;
+    min-height: calc(100vh - 40px); /* Adjust for margin */
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(255, 255, 255, 0.5); /* 黒板の枠のようなボーダー */
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Header */
+header {
+    background-color: rgba(0, 0, 0, 0.5); /* 黒板に溶け込む色 */
+    color: #eee;
+    padding: 15px 20px;
+    text-align: center;
+    border-top-left-radius: 10px; /* 角を少し丸く */
+    border-top-right-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* チョークライン */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em; /* 少し大きく */
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 影で立体感 */
+}
+
+/* Card Styles */
+.card {
+    background-color: rgba(255, 255, 255, 0.9); /* プリントのような背景 */
+    border-radius: 8px; /* 角を少し丸く */
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 浮き出し感 */
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* わずかなボーダー */
+}
+
+.card .label {
+    display: block;
+    font-size: 1em;
+    color: #333; /* プリント上の文字色 */
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* チョークのような影 */
+}
+
+/* Input Group (Stepper) */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-stepper {
+    background-color: rgba(255, 255, 255, 0.8); /* マーカーのような白 */
+    border: 2px solid rgba(0, 0, 0, 0.5); /* マーカーの縁取り */
+    border-radius: 50%;
+    width: 45px; /* 少し大きく */
+    height: 45px;
+    font-size: 1.8em; /* 少し大きく */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-stepper:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-stepper:active {
+    transform: scale(0.95);
+}
+
+.value-display {
+    font-size: 3em; /* 大きく */
+    font-weight: bold;
+    color: #333; /* プリント上の文字色 */
+    min-width: 80px; /* 幅を広げる */
+    text-align: center;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.value-display small.unit {
+    font-size: 0.6em;
+    margin-left: 5px;
+    color: #555;
+}
+
+/* Weather Grid */
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.weather-btn {
+    background-color: rgba(255, 255, 255, 0.8); /* マーカーのような背景 */
+    border: 2px solid rgba(0, 0, 0, 0.3); /* マーカーの縁取り */
+    border-radius: 8px;
+    padding: 10px 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.weather-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.weather-btn.selected {
+    background-color: #ffeb3b; /* 黄色マーカーのような選択色 */
+    border-color: #fbc02d;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.weather-icon {
+    font-size: 2.5em; /* 少し大きく */
+    margin-bottom: 5px;
+}
+
+/* Character Area */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.controls-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.character-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.speech-bubble {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 3px solid #333;
+    border-radius: 20px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    max-width: 90%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-bottom: 3px solid #333;
+    border-right: 3px solid #333;
+    z-index: -1;
+}
+
+.speech-bubble p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.5;
+}
+
+.character-container {
+    width: 100%;
+    max-width: 350px; /* Increased size */
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#status-char {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+/* Wide layout for iPad landscape and big screens */
+@media (min-width: 800px) {
+    .main-layout {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 30px;
+    }
+
+    .controls-column {
+        flex: 1.2; /* Slightly wider side for controls */
+    }
+
+    .character-column {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .speech-bubble {
+        margin-bottom: 30px;
+    }
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-danger {
+    display: block;
+    width: calc(100% - 40px); /* Full width minus padding */
+    padding: 12px 20px;
+    margin: 10px auto;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #6200ee;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #7b1fa2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-danger {
+    background-color: #d32f2f;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c62828;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Toast Notification */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Graph Screen Specifics */
+#chart-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (height / width = 9 / 16 = 0.5625) */
+    margin: 0 auto 15px auto;
+}
+
+#weatherChart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* History List */
+.history-list {
+    max-height: 250px; /* Limit height for scrollability */
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-date {
+    font-size: 0.9em;
+    color: #777;
+    flex-shrink: 0;
+    width: 100px; /* Fixed width for date */
+}
+
+.history-data {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.history-temp, .history-hum, .history-weather {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.history-weather {
+    font-size: 1.2em; /* Make weather icon slightly larger */
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+    padding: 5px;
+}
+
+.btn-delete:hover {
+    color: #d32f2f;
+}
+
+.actions-area {
+    margin-top: auto; /* Push actions to the bottom */
+    padding-top: 10px;
+}
+
+/* Custom Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden; /* Hidden by default */
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.modal-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content p {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-actions .btn-danger,
+.modal-actions .btn-secondary {
+    width: auto; /* Override full width for modal buttons */
+    padding: 10px 25px;
+    margin: 0; /* Remove margin from general buttons */
+    font-size: 1em;
+    box-shadow: none; /* Remove shadow for modal buttons */
+}
+
+.modal-actions .btn-danger:hover,
+.modal-actions .btn-secondary:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    #app {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+    header {
+        border-radius: 0;
+    }
+
+    .btn-primary, .btn-secondary, .btn-danger {
+        width: calc(100% - 20px); /* Adjust for smaller screens */
+    }
+}
